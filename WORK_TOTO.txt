@@ -1,0 +1,56 @@
+
+
+
+
+
+
+
+PRIORITY
+=============
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GENERAL LIST
+================
+
+
+
+Combine appliance and appliance button
+rename it as node
+
+move the form2 under propertoes menu item
+rename it
+populate it with data for view/edit
+things to include
+image
+textbox of actions using our format for omnet communication
+communication standard
+profiles
+
+create profiles for particular common devices
+eg temp sensor, occupancy sensor, tv, wahing machine, light, gateway, etc
+
+
+
+
+
+
+
+
+
+
+
+OLD
+============

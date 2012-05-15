@@ -1,0 +1,710 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Windows;
+using System.Collections;
+
+
+namespace SensingSimulation
+{
+    public partial class Form1 : Form
+    {
+        //List sensors;
+        
+        int x_from;
+        int y_from;
+        double dist;
+        bool from_selected = false;
+        ArrayList walls = new ArrayList();
+        ArrayList appliances = new ArrayList();
+        ArrayList sensors = new ArrayList();
+        Dictionary<string, SimulationCommand> c = new Dictionary<string, SimulationCommand>();
+
+
+        private Point mouseDownLocation = Point.Empty;
+
+        public void setToolStrip(string theText)
+        {
+            //this.toolStripStatusLabel.Text = theText;
+            this.toolStripSplitButton1.Text = theText;
+        }
+
+
+        public ArrayList getSensorData(Appliance a)
+        {
+            // do this for sensors
+            // maybe make sensors in the sensor unit enabl or disable
+            ArrayList sensorData = new ArrayList();
+            for (int i = 0; i < sensors.Count; i++)
+            {
+                Sensor currentSensor = walls[i] as Sensor;
+                int dist = (int)distance(a.applButton.Location, currentSensor.applButton.Location);
+                bool sight = IntersectsWall(a.applButton.Location, currentSensor.applButton.Location);
+
+                Appliance.SensorDataItem item1 = new Appliance.SensorDataItem();
+                item1.sensortype = 1;
+                item1.sensorrange = dist;
+                item1.lineofsight = sight;
+                item1.sensorvalue = currentSensor.temp;
+                item1.readingtime = 0;
+                sensorData.Add(item1);
+
+                Appliance.SensorDataItem item2 = new Appliance.SensorDataItem();
+                item2.sensortype = 2;
+                item2.sensorrange = dist;
+                item2.lineofsight = sight;
+                item2.sensorvalue = currentSensor.temp;
+                item2.readingtime = 0;
+                sensorData.Add(item2);
+
+                Appliance.SensorDataItem item3 = new Appliance.SensorDataItem();
+                item3.sensortype = 3;
+                item3.sensorrange = dist;
+                item3.lineofsight = sight;
+                item3.sensorvalue = currentSensor.temp;
+                item3.readingtime = 0;
+                sensorData.Add(item3);
+            }
+
+            return sensorData;
+
+
+        }
+
+
+
+
+
+
+public class Line
+{
+public Point StartPos;
+public Point EndPos;
+public  Line(Point a, Point b)
+{
+    StartPos = a;
+    EndPos = b;
+}
+
+}
+
+public double distance(Point a, Point b)
+{
+    double dist = Math.Sqrt(
+             Math.Pow(Math.Abs(a.X - b.X), 2)
+           + Math.Pow(Math.Abs(a.Y - b.Y), 2)
+                     );
+    return dist;
+}
+
+
+
+
+public bool IntersectsWall(Point A, Point B)
+{
+    Graphics gfx = this.CreateGraphics();
+    Pen myPen = new Pen(Color.Black);
+    Line line1 = new Line(A, B);
+
+    //gfx.DrawLine(myPen, line1.StartPos, line1.EndPos);
+    
+    for (int i = 0; i < walls.Count; i++)
+    {
+        Line currentWall = walls[i] as Line;
+        if (Intersect(currentWall.StartPos.X,
+            currentWall.StartPos.Y,
+            currentWall.EndPos.X,
+            currentWall.EndPos.Y,
+            line1.StartPos.X,
+            line1.StartPos.Y,
+            line1.EndPos.X,
+            line1.EndPos.Y))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
+
+
+
+
+bool Intersect(
+double Ax, double Ay,
+double Bx, double By,
+double Cx, double Cy,
+double Dx, double Dy)
+    //,
+//double *X, double *Y) 
+{
+
+  double  distAB, theCos, theSin, newX, ABpos ;
+
+  //  Fail if either line segment is zero-length.
+  //if (Ax==Bx && Ay==By || Cx==Dx && Cy==Dy) return NO;
+  if (Ax==Bx && Ay==By || Cx==Dx && Cy==Dy) return false;
+
+  //  Fail if the segments share an end-point.
+  if (Ax==Cx && Ay==Cy || Bx==Cx && By==Cy
+  ||  Ax==Dx && Ay==Dy || Bx==Dx && By==Dy) {
+    return false; }
+
+  //  (1) Translate the system so that point A is on the origin.
+  Bx-=Ax; By-=Ay;
+  Cx-=Ax; Cy-=Ay;
+  Dx-=Ax; Dy-=Ay;
+
+  //  Discover the length of segment A-B.
+  //distAB=sqrt(Bx*Bx+By*By);
+  distAB=Math.Sqrt(Bx*Bx+By*By);
+
+  //  (2) Rotate the system so that point B is on the positive X axis.
+  theCos=Bx/distAB;
+  theSin=By/distAB;
+  newX=Cx*theCos+Cy*theSin;
+  Cy  =Cy*theCos-Cx*theSin; Cx=newX;
+  newX=Dx*theCos+Dy*theSin;
+  Dy  =Dy*theCos-Dx*theSin; Dx=newX;
+
+  //  Fail if segment C-D doesn't cross line A-B.
+  // if (Cy<0. && Dy<0. || Cy>=0. && Dy>=0.) return false; //strange points
+  if (Cy<0 && Dy<0 || Cy>=0 && Dy>=0) return false;
+
+  //  (3) Discover the position of the intersection point along line A-B.
+  ABpos=Dx+(Cx-Dx)*Dy/(Dy-Cy);
+
+  //  Fail if segment C-D crosses line A-B outside of segment A-B.
+  // if (ABpos<0. || ABpos>distAB) return false; //strange point?
+  if (ABpos<0 || ABpos>distAB) return false;
+
+  //  (4) Apply the discovered position to line A-B in the original coordinate system.
+  //*X=Ax+ABpos*theCos;
+  //*Y=Ay+ABpos*theSin;
+
+  //  Success.
+  return true; } 
+
+
+
+
+
+
+
+
+
+
+
+//public static Vector2 IntersectionPoint(Line firstLine, Line secondLine)
+//public static bool Intersect(Line firstLine, Line secondLine)
+public bool IntersectOld(Line firstLine, Line secondLine)
+{
+            double Ua, Ub;
+            // Equations to determine whether lines intersect
+            Ua = ((secondLine.EndPos.X - secondLine.StartPos.X) * (firstLine.StartPos.Y - secondLine.StartPos.Y) - (secondLine.EndPos.Y - secondLine.StartPos.Y) * (firstLine.StartPos.X - secondLine.StartPos.X)) /
+                    ((secondLine.EndPos.Y - secondLine.StartPos.Y) * (firstLine.EndPos.X - firstLine.StartPos.X) - (secondLine.EndPos.X - secondLine.StartPos.X) * (firstLine.EndPos.Y - firstLine.StartPos.Y));
+            Ub = ((firstLine.EndPos.X - firstLine.StartPos.X) * (firstLine.StartPos.Y - secondLine.StartPos.Y) - (firstLine.EndPos.Y - firstLine.StartPos.Y) * (firstLine.StartPos.X - secondLine.StartPos.X)) /
+                    ((secondLine.EndPos.Y - secondLine.StartPos.Y) * (firstLine.EndPos.X - firstLine.StartPos.X) - (secondLine.EndPos.X - secondLine.StartPos.X) * (firstLine.EndPos.Y - firstLine.StartPos.Y));
+            //if (Ua >= 0.0f && Ua <= 1.0f && Ub >= 0.0f && Ub <= 1.0f)
+            if (Ua >= 0.0 && Ua <= 1.0 && Ub >= 0.0 && Ub <= 1.0)
+            {
+                double x = firstLine.StartPos.X + Ua*(firstLine.EndPos.X - firstLine.StartPos.X);
+                double y = firstLine.StartPos.Y + Ua*(firstLine.EndPos.Y - firstLine.StartPos.Y);
+                //return new Vector2((float)x, (float)y);
+ 		return true;
+            }
+            else
+            {
+                //return new Vector2();
+		return false;
+            }
+        }
+
+
+
+
+
+        public Form1()
+        {
+            InitializeComponent();
+            appliances.Add(new Appliance(this, new Point(10, 10)));
+            sensors.Add(new Sensor(this, new Point(10, 50)));
+
+            Point p1;
+            Point p2;
+            p1 = new Point(65, 40);
+            p2 = new Point(340, 40);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(340, 40);
+            p2 = new Point(340, 245);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(340, 245);
+            p2 = new Point(223, 246);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(183, 245);
+            p2 = new Point(65, 245);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(152, 245);
+            p2 = new Point(150, 40);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(127, 297);
+            p2 = new Point(273, 297);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(273, 297);
+            p2 = new Point(275, 355);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(275, 355);
+            p2 = new Point(65, 360);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(183, 357);
+            p2 = new Point(184, 497);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(340, 360);
+            p2 = new Point(340, 565);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(340, 565);
+            p2 = new Point(65, 565);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(342, 50);
+            p2 = new Point(524, 50);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(524, 50);
+            p2 = new Point(524, 80);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(525, 196);
+            p2 = new Point(665, 196);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(665, 196);
+            p2 = new Point(666, 237);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(666, 442);
+            p2 = new Point(666, 484);
+            walls.Add(new Line(p1, p2));
+
+            p1 = new Point(666, 484);
+            p2 = new Point(343, 486);
+            walls.Add(new Line(p1, p2));
+
+
+        }
+
+        private void Sensor1_Click(object sender, EventArgs e)
+        {
+            //this.Controls.
+            //this.g
+            
+
+            
+
+
+        }
+
+        private void Appliance1_Click(object sender, EventArgs e)
+        {
+            if (from_selected)
+            {
+                dist = Math.Sqrt(
+                         Math.Pow(Math.Abs(x_from - Appliance1.Location.X), 2)
+                       + Math.Pow(Math.Abs(y_from - Appliance1.Location.Y), 2)
+                                 );
+                from_selected = false;
+                System.Windows.Forms.MessageBox.Show("Distance: " + dist.ToString());
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("This is an appliance!");
+                x_from = Appliance1.Location.X;
+                y_from = Appliance1.Location.Y;
+                from_selected = true;
+            }
+
+        }
+
+
+
+        private void Form1_DoubleClick(object sender, EventArgs e)
+        {
+            MouseEventArgs m = e as MouseEventArgs;
+            Point newL = new Point(m.X, m.Y);
+            Appliance1.Location = newL;
+
+        }
+
+        private void Sensor1_MouseClick(object sender, MouseEventArgs e)
+        {
+
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                if (from_selected)
+                {
+                    dist = Math.Sqrt(
+                             Math.Pow(Math.Abs(x_from - Sensor1.Location.X), 2)
+                           + Math.Pow(Math.Abs(y_from - Sensor1.Location.Y), 2)
+                                     );
+                    from_selected = false;
+                    System.Windows.Forms.MessageBox.Show("Distance: " + dist.ToString());
+                }
+                else
+                {
+                    System.Windows.Forms.MessageBox.Show("This is a sensor!");
+                    x_from = Sensor1.Location.X;
+                    y_from = Sensor1.Location.Y;
+                    from_selected = true;
+                }
+
+            }
+
+        }
+
+        private void Sensor1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Right) == MouseButtons.Right)
+            {
+                //Form2 f2 = new Form2(5);
+                //f2.ShowDialog();
+                System.Windows.Forms.MessageBox.Show("Dialog closed!");
+
+            }
+
+        }
+
+        private void Appliance1_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDownLocation = new Point(e.X, e.Y);
+            
+        }
+
+        private void Appliance1_DragDrop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                Point dropLoc = PointToClient(new Point(e.X, e.Y));
+
+                ApplianceButton b = e.Data.GetData(typeof(ApplianceButton)) as ApplianceButton;
+                if (e.Effect == DragDropEffects.Move)
+                {
+                    //ApplianceButton b = e.Data.GetData(typeof(ApplianceButton)) as ApplianceButton;
+                    //e.Data.GetType() == ApplianceButton.
+                    b.Location = dropLoc;
+
+                    //do we cross a wall?
+                    
+                    if (IntersectsWall(dropLoc, Sensor1.Location))
+                    {
+                        this.toolStripStatusLabel.Text = "behind a wall";
+                    }
+                    else
+                    {
+                        this.toolStripStatusLabel.Text = "line of sight";
+                    }
+                    
+                    //this.toolStripStatusLabel.Text = "MOVE ONE";
+                }
+
+                if (e.Effect == DragDropEffects.Copy)
+                {
+                    //this.toolStripStatusLabel.Text = "COPY ONE";
+                    if (b.Text == "A")
+                    {
+                        appliances.Add(new Appliance(this, dropLoc));
+                    }
+                    if (b.Text == "S")
+                    {
+                        sensors.Add(new Sensor(this, dropLoc));
+                    }
+
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                this.toolStripStatusLabel.Text = "Exception thrown: " + ex.ToString();
+            }
+
+
+
+
+
+        }
+
+        private void Appliance1_MouseMove(object sender, MouseEventArgs e)
+        {
+                if (e.Button == MouseButtons.Left) {
+                    // we know the mouse is down - has it the mouse moved enough that we should
+                    // consider it a drag?
+                    Size dragBoxSize = SystemInformation.DragSize;
+
+                    if ((dragBoxSize.Width > Math.Abs(mouseDownLocation.X - e.X))
+                        ||(dragBoxSize.Height > Math.Abs(mouseDownLocation.Y - e.Y))) {
+                        // we should consider this a drag...
+                        DragDropEffects d = Appliance1.DoDragDrop(Appliance1, DragDropEffects.Copy);
+                        //Sensor s = new Sensor();
+                        //DragDropEffects d = Appliance1.DoDragDrop(s, DragDropEffects.Copy);
+                        //this.toolStripStatusLabel.Text = d.ToString();
+
+                    }
+                }
+
+
+
+
+
+            /*
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                this.toolStripStatusLabel.Text = "Drag";
+                string x = "you dropped";
+                Sensor s = new Sensor();
+                DragDropEffects d = this.DoDragDrop(s, DragDropEffects.Copy);
+                this.toolStripStatusLabel.Text = d.ToString();
+            }
+             * */
+
+
+        }
+
+        private void Appliance1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            this.toolStripStatusLabel.Text = "feedback_S";
+            
+
+        }
+
+        private void Form1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            this.toolStripStatusLabel.Text = "feedback_T";
+
+        }
+
+        private void Sensor1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            this.toolStripStatusLabel.Text = "feedback_E";
+
+        }
+
+        private void Sensor1_DragOver(object sender, DragEventArgs e)
+        {
+            this.toolStripStatusLabel.Text = "DragOver";
+
+        }
+
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            //e.Effect = DragDropEffects.Copy; 
+
+        }
+
+        private void Form1_DragOver(object sender, DragEventArgs e)
+        {
+            //this.toolStripStatusLabel.Text = "PREP SOMETHING";
+            if ((e.KeyState & 8) == 8 &&
+                            (e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+            {
+
+                // CTL KeyState for copy.
+                //this.toolStripStatusLabel.Text = "PREP COPY";
+                e.Effect = DragDropEffects.Copy;
+
+            }
+            else
+            {
+                //this.toolStripStatusLabel.Text = "PREP MOVE";
+                e.Effect = DragDropEffects.Move;
+            }
+
+
+
+        }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            // KEEP FOR TESTING STUFF
+            //Graphics gfx = e.Graphics;
+            //Pen myPen = new Pen(Color.Black);
+
+            //Line line1 = new Line(new Point(10, 10), new Point(100, 100));
+            //Line line3 = new Line(new Point(10, 50), new Point(60, 10));
+            //Line line2 = new Line(new Point(50, 20), new Point(20, 100));
+
+            //gfx.DrawLine(myPen, line1.StartPos, line1.EndPos);
+            //gfx.DrawLine(myPen, line2.StartPos, line2.EndPos);
+
+            //bool theyintersect = Intersect(line1, line2);
+            //this.toolStripStatusLabel.Text = "Intersect? " + theyintersect.ToString();
+
+            //return;
+
+            //Pen newPen = new Pen(Color.Yellow, 10);
+            //for (int i = 0; i < walls.Count; i++)
+            //{
+            //    Line currentLine = walls[i] as Line;
+            //    gfx.DrawLine(newPen, currentLine.StartPos, currentLine.EndPos);
+            //}
+
+        }
+    }
+}
+
+
+
+
+/*
+            TextReader tr = new StreamReader("date.txt");
+            //tr.Read
+            StreamReader sr = new StreamReader("date.txt");
+
+            TextReader reader = File.OpenText("test.txt");
+            while (
+            { 
+                int x = int.Parse(reader.ReadLine()); 
+                double y = double.Parse(reader.ReadLine()); 
+                string z = reader.ReadLine(); 
+            } 
+
+            TextReader rdr = File.OpenText("test.txt");
+            string line;
+            while ((line = rdr.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+            }
+            rdr.Close();
+
+            //System.Collections.Hashtable
+            Dictionary<string, object> d = new Dictionary<string, object>();
+            Button b = new Button();
+            d["hello"] = b;
+
+*/
+
+
+
+/*
+
+        public ArrayList getSensorData(Appliance a)
+        {
+            // do this for sensors
+            // maybe make sensors in the sensor unit enabl or disable
+            ArrayList sensorData = new ArrayList();
+            for (int i = 0; i < sensors.Count; i++)
+            {
+                Sensor currentSensor = walls[i] as Sensor;
+                int dist = (int)distance(a.applButton.Location, currentSensor.applButton.Location);
+                bool sight = IntersectsWall(a.applButton.Location, currentSensor.applButton.Location);
+
+                Appliance.SensorDataItem item1 = new Appliance.SensorDataItem();
+                item1.sensortype = 1;
+                item1.sensorrange = dist;
+                item1.lineofsight = sight;
+                item1.sensorvalue = currentSensor.temp;
+                item1.readingtime = 0;
+                sensorData.Add(item1);
+
+                Appliance.SensorDataItem item2 = new Appliance.SensorDataItem();
+                item2.sensortype = 2;
+                item2.sensorrange = dist;
+                item2.lineofsight = sight;
+                item2.sensorvalue = currentSensor.temp;
+                item2.readingtime = 0;
+                sensorData.Add(item2);
+
+                Appliance.SensorDataItem item3 = new Appliance.SensorDataItem();
+                item3.sensortype = 3;
+                item3.sensorrange = dist;
+                item3.lineofsight = sight;
+                item3.sensorvalue = currentSensor.temp;
+                item3.readingtime = 0;
+                sensorData.Add(item3);
+            }
+            return sensorData;
+        }
+
+
+*/
+
+
+
+/*
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                Point dropLoc = PointToClient(new Point(e.X, e.Y));
+
+                ApplianceButton b = e.Data.GetData(typeof(ApplianceButton)) as ApplianceButton;
+                if (e.Effect == DragDropEffects.Move)
+                {
+                    //ApplianceButton b = e.Data.GetData(typeof(ApplianceButton)) as ApplianceButton;
+                    //e.Data.GetType() == ApplianceButton.
+                    b.Location = dropLoc;
+
+                    //do we cross a wall?
+                    
+                    if (IntersectsWall(dropLoc, Sensor1.Location))
+                    {
+                        this.toolStripStatusLabel.Text = "behind a wall";
+                    }
+                    else
+                    {
+                        this.toolStripStatusLabel.Text = "line of sight";
+                    }
+                    
+                    //this.toolStripStatusLabel.Text = "MOVE ONE";
+                }
+
+                if (e.Effect == DragDropEffects.Copy)
+                {
+                    //this.toolStripStatusLabel.Text = "COPY ONE";
+                    if (b.Text == "A")
+                    {
+                        Nodes.Instance.Add(new Appliance(this, dropLoc));
+                    }
+                    if (b.Text == "S")
+                    {
+                        sensors.Add(new Sensor(this, dropLoc));
+                    }
+
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                this.toolStripStatusLabel.Text = "Exception thrown: " + ex.ToString();
+            }
+
+
+
+
+
+        }
+
+
+*/
