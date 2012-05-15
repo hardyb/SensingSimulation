@@ -8,3 +8,8 @@ C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\Se
 C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.pdb
 C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.Form2.resources
 C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.ApplianceDialog.resources
+C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.Aggregation.resources
+C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.ApplianceButton.resources
+C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.Context.resources
+C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.NodeConnection.resources
+C:\Users\Andrew Hardy\Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Debug\SensingSimulation.PresentationDialog.resources

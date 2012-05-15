@@ -18,7 +18,6 @@ namespace SensingSimulation
     public partial class Form1 : Form
     {
         //List sensors;
-
         int x_from;
         int y_from;
         double dist;
@@ -30,6 +29,9 @@ namespace SensingSimulation
         Aggregation ag;
         Point dragStart;
         Rectangle selectionRectangle;
+        public Diagram mDiagram;
+        LoadConnections lcForm;
+
 
 
         private Point mouseDownLocation = Point.Empty;
@@ -55,6 +57,14 @@ namespace SensingSimulation
             this.ContextMenuStrip = this.contextMenuStrip1;
             pd = new PresentationDialog();
             ag = new Aggregation();
+            int w = this.ClientRectangle.Width;
+            int h = this.ClientRectangle.Height - this.mainStatus.Height;
+            Rectangle bounds = new Rectangle(0, 0, w, h);
+            mDiagram = new Diagram(bounds);
+            this.ResizeRedraw = false;
+            lcForm = new LoadConnections(this);
+
+
 
         }
 
@@ -281,49 +291,67 @@ namespace SensingSimulation
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            //e.ToString();
+            //this.Invalidate(
+            
             // Call the OnPaint method of the base class.
-
-            // Call methods of the System.Drawing.Graphics object.
-            //e.Graphics.DrawString(Text, Font, new SolidBrush(ForeColor), ClientRectangle);
-            //Graphics gfx = e.Graphics;
             Graphics gfx = this.CreateGraphics();
+            //gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+//            gfx.ClipBounds.Size
+            //this.Invalidate(
+            //gfx.Clear(Color.White);
+
+            if (!e.ClipRectangle.IntersectsWith(this.mDiagram.mBounds))
+            {
+                base.OnPaint(e);
+                return;
+            }
+
+            //if (!e.ClipRectangle.Equals(gfx.ClipBounds))
+            //{
+            //    base.OnPaint(e);
+            //    return;
+            //}
             
             Pen myPen = new Pen(Color.Black);
-            //if (!this.selectionRectangle.IsEmpty)
-            //{
-            //}
             gfx.DrawRectangle(myPen, this.selectionRectangle);
+            //Rectangle bounds = new Rectangle(new Point(0, 0), gfx.ClipBounds.Size);
+            //Rectangle bounds = new Rectangle(new Point(0,0), this.ClientRectangle.Size);
+            int w = this.ClientRectangle.Width;
+            int h = this.ClientRectangle.Height - this.mainStatus.Height;
+            Rectangle bounds = new Rectangle(0, 0, w, h);
+            
+            //Rectangle bounds = new Rectangle(0, 0, this.Width-50, this.Height-50);
+            this.mDiagram.Draw(gfx, bounds);
+
+            //this.ClientRectangle
+            
+            
+
+            /*
             foreach (NodeConnection n in NodeConnections.Instance)
             {
                 if ( n.gradient == "best_deliver_to" )//&& n.state == "some name")
                 {
-                    //GraphicsPath gp1 = new GraphicsPath(FillMode.Winding);
-                    //GraphicsPath gp2 = new GraphicsPath(FillMode.Winding);
-                    //myPen.EndCap = LineCap.ArrowAnchor;
-                    //myPen.
-                    //myPen.StartCap = LineCap.Round;
                     myPen.CustomEndCap = new AdjustableArrowCap(10, 10, true);
-                    //myPen.CustomStartCap = new System.Drawing.Drawing2D.
                     int xAdjuster = 0;
                     int yAdjuster = 0;
-                    //Point toLocation = new Point(n.node2.applButton.Location.X + xAdjustor,
-                    //                                n.node2.applButton.Location.Y + yAdjustor);
                     Point toLocation = new Point(n.node2.applButton.Location.X,
                                                     n.node2.applButton.Location.Y);
                     if (n.node1.applButton.Location.X > n.node2.applButton.Location.X)
                     {
-                        //add width to x
                         toLocation.X += n.node2.applButton.Width;
                     }
                     if (n.node1.applButton.Location.Y > n.node2.applButton.Location.Y)
                     {
-                        //add height to y
                         toLocation.Y += n.node2.applButton.Height;
                     }
                     gfx.DrawLine(myPen, n.node1.applButton.Location, toLocation);
                 }
 
             }
+             * */
+
             base.OnPaint(e);
 
         } 
@@ -372,7 +400,6 @@ namespace SensingSimulation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void mainStatus_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -380,39 +407,18 @@ namespace SensingSimulation
 
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadNodesMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult r = System.Windows.Forms.MessageBox.Show("Reset Nodes?", "Refresh Display", MessageBoxButtons.YesNoCancel);
-            switch (r)
+            bool result;
+            if (bool.TryParse("fal", out result) && result)
             {
-                case DialogResult.Yes:
-                    break;
-                case DialogResult.No:
-                    break;
-                case DialogResult.Cancel:
-                    return;
-                    break;
-                default:
-                    return;
-                    break;
-
+                DialogResult r = System.Windows.Forms.MessageBox.Show("Reset Nodes?", "Refresh Display", MessageBoxButtons.YesNoCancel);
             }
-
-            if (r == DialogResult.Yes)
-            {
-                Nodes.Instance.removeAllFromForm();
-                Nodes.Instance.Clear();
-                SimCommands.Instance.execute(Utilities.Helper.moduleList, this);
-            }
-            
-            NodeConnections.Instance.Clear();
-            foreach (KeyValuePair<string, Appliance> p in Nodes.Instance)
-            {
-                string nodeConnectionsFile = p.Key + "Connections.txt";
-                SimCommands.Instance.execute(Utilities.Helper.simulationsFolder+nodeConnectionsFile, this);
-            }
-            this.Invalidate();
-
+            ReloadNodes();
+            SetConnectionCommand c = (SetConnectionCommand)SimCommands.Instance["CONNECTION"];
+            c.DataNameParam = "0202FF06";
+            c.connectionSet = SetConnectionCommand.ConnectionSetType.BestDeliver;
+            ReloadConnections();
         }
         
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -558,5 +564,132 @@ namespace SensingSimulation
 
         }
 
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            this.Invalidate();
+        }
+
+        private void ArrangeMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            //this.mDiagram.Arrange();
+            this.mDiagram.Arrange();
+            //this.mDiagram.Arrange(0.5, 10, 3, true);
+            this.Cursor = Cursors.Arrow;
+
+            //this.mDiagram.
+
+
+            this.Invalidate();
+
+        }
+
+        private void LoadConnectionsMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lcForm.Show();
+            //ReloadConnections();
+        }
+
+        public void ReloadConnections()
+        {
+            //DialogResult.
+            
+            //Utilities.Helper.InputBox("gradients", "best or reinforce?", 
+            //    ref SimCommands.Instance["CONNECTION"].result);
+            this.mDiagram.ClearConnections();
+            NodeConnections.Instance.Clear();
+            foreach (KeyValuePair<string, Appliance> p in Nodes.Instance)
+            {
+                string nodeConnectionsFile = p.Key + "Connections.txt";
+                SimCommands.Instance.execute(Utilities.Helper.simulationsFolder + nodeConnectionsFile, this);
+            }
+            foreach (KeyValuePair<string, Appliance> p in Nodes.Instance)
+            {
+                if (p.Value.applButton.Selected)
+                {
+                    IterateGradients(p.Value.node_name);
+                }
+            }
+            this.Invalidate();
+        }
+
+        private void ReloadNodes()
+        {
+            this.mDiagram.Clear();
+            Nodes.Instance.removeAllFromForm();
+            Nodes.Instance.Clear();
+            SimCommands.Instance.execute(Utilities.Helper.moduleList, this);
+            this.Invalidate();
+        }
+
+        private void IterateGradients(string currentName)
+        {
+            foreach (NodeConnection n in NodeConnections.Instance)
+            {
+                if (n.node1.node_name == currentName &&
+                    n.bestDeliver)
+                {
+                    //currentForm.mDiagram.AddNode(n.node2.applButton.eNode);
+                    n.node2.applButton.eNode.AddChild(n.node1.applButton.eNode);
+                    currentName = n.node2.node_name;
+                    IterateGradients(currentName);
+                }
+            }
+
+        }
+
+
+        private void Form1_MaximizedBoundsChanged(object sender, EventArgs e)
+        {
+            int x = 7;
+
+        }
+
+
+        private void DrawString(float x, float y)
+        {
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+            string drawString = "Sample Text";
+            System.Drawing.Font drawFont = new System.Drawing.Font(
+                "Arial", 8);
+            System.Drawing.SolidBrush drawBrush = new
+                System.Drawing.SolidBrush(System.Drawing.Color.Black);
+            //float x = 150.0f;
+            //float y = 50.0f;
+            formGraphics.DrawString(drawString, drawFont, drawBrush, x, y);
+//            GraphicsPath
+            //formGraphics.DrawString(
+            drawFont.Dispose();
+            drawBrush.Dispose();
+            formGraphics.Dispose();
+        }
+
+
     }
 }
+
+/*
+ *             DialogResult r = System.Windows.Forms.MessageBox.Show("Reset Nodes?", "Refresh Display", MessageBoxButtons.YesNoCancel);
+            switch (r)
+            {
+                case DialogResult.Yes:
+                    break;
+                case DialogResult.No:
+                    break;
+                case DialogResult.Cancel:
+                    return;
+                    break;
+                default:
+                    return;
+                    break;
+
+            }
+            if (r == DialogResult.Yes)
+            {
+            }
+
+*/

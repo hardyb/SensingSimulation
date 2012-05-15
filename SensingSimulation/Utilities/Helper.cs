@@ -15,7 +15,19 @@ namespace SensingSimulation.Utilities
         public static string displayFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\src\\display\\";
         public static string moduleList = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\simulations\\ModuleList.txt";
         public static string ProjFolder = "C:\\Users\\Andrew Hardy\\Documents\\Visual Studio 2008\\Projects\\SensingSimulation\\";
-        public static string simulationsFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\simulations\\";
+        //public static string simulationsFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\simulations\\";
+        public static string simulationsFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\simulations\\newconnectionfiles\\";
+
+
+        public static NodeConnection profile = new NodeConnection(null, null, null, "",
+                int.Parse("3"), true, int.Parse("12"), int.Parse("9999"), 
+                true, false, false, false);
+
+
+        //NodeConnection c = new NodeConnection(currentForm, node1, node2, state_name,
+        //    int.Parse(state_action), to_node_up, int.Parse(costDeliv), int.Parse(costObt),
+        //    bestDeliver, reinforcedDeliver, bestObtain, reinforcedObtain);
+
             
         //public static string eventsFolder = "C:\\omnetpp-4.1\\Mywork4\\src\\events\\";
         //public static string displayFolder = "C:\\omnetpp-4.1\\Mywork4\\src\\display\\";

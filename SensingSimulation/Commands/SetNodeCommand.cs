@@ -21,6 +21,7 @@ namespace SensingSimulation.Commands
                 Nodes.Instance.Add(line, new Appliance(currentForm, new Point(0, 0), line));
             }
             currentNode = Nodes.Instance[line];
+            //currentForm.mDiagram.AddNode(currentNode.applButton.eNode);
         }
 
 

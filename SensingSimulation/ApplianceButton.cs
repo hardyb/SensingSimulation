@@ -14,6 +14,7 @@ namespace SensingSimulation
 
     public class ApplianceButton : Button
     {
+        public ENode eNode;
         public bool hasMoved = false;
         bool isSelected = false;
         Aggregation ag;
@@ -192,6 +193,7 @@ namespace SensingSimulation
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             //this.toolStripMenuItem1.Click += new System.EventHandler(
+            eNode = new ENode(this);
             ag = new Aggregation();
 
 

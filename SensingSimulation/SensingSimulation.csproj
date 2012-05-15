@@ -71,6 +71,14 @@
     <Compile Include="Context.Designer.cs">
       <DependentUpon>Context.cs</DependentUpon>
     </Compile>
+    <Compile Include="Diagram.cs" />
+    <Compile Include="LoadConnections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadConnections.Designer.cs">
+      <DependentUpon>LoadConnections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Node.cs" />
     <Compile Include="NodeConnection.cs">
     </Compile>
     <Compile Include="NodeConnections.cs" />
@@ -123,6 +131,10 @@
       <DependentUpon>Form2.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="LoadConnections.resx">
+      <DependentUpon>LoadConnections.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="NodeConnection.resx">
       <DependentUpon>NodeConnection.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -158,6 +170,7 @@
       <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Helper.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="RemovedCodeKeepInCase.txt" />
