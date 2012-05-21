@@ -22,15 +22,18 @@ namespace SensingSimulation
 
         public void execute(string filename, Form1 f)
         {
-            TextReader rdr = SimulationCommand.SetFile(filename);
-            SimulationCommand.SetForm(f);
-            string line;
-            while ((line = rdr.ReadLine()) != null)
+            if (File.Exists(filename))
             {
-                SimulationCommand.IncrementLineNumber();
-                this[line].execute();
+                TextReader rdr = SimulationCommand.SetFile(filename);
+                SimulationCommand.SetForm(f);
+                string line;
+                while ((line = rdr.ReadLine()) != null)
+                {
+                    SimulationCommand.IncrementLineNumber();
+                    this[line].execute();
+                }
+                rdr.Close();
             }
-            rdr.Close();
         }
 
 

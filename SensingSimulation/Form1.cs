@@ -423,7 +423,7 @@ namespace SensingSimulation
         
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TextWriter wtr = File.CreateText("C:\\omnetpp-4.2.1\\my_workspace\\Mywork4\\src\\save.txt");
+            TextWriter wtr = File.CreateText("C:\\omnetpp-4.2.2\\my_workspace\\Mywork4\\src\\save.txt");
             foreach ( KeyValuePair<string, Appliance> p in Nodes.Instance )
             {
                 wtr.WriteLine("NODE");

@@ -28,3 +28,4 @@ C:\Documents and Settings\AndrewHardy\My Documents\Visual Studio 2008\Projects\S
 C:\Documents and Settings\AndrewHardy\My Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Release\SensingSimulation.PresentationDialog.resources
 C:\Documents and Settings\AndrewHardy\My Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Release\SensingSimulation.Properties.Resources.resources
 C:\Documents and Settings\AndrewHardy\My Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Release\SensingSimulation.csproj.GenerateResource.Cache
+C:\Documents and Settings\AndrewHardy\My Documents\Visual Studio 2008\Projects\SensingSimulation\SensingSimulation\obj\Release\SensingSimulation.LoadConnections.resources

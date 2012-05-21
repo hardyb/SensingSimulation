@@ -11,12 +11,12 @@ namespace SensingSimulation.Utilities
 {
     public class Helper
     {
-        public static string eventsFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\src\\events\\";
-        public static string displayFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\src\\display\\";
-        public static string moduleList = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\simulations\\ModuleList.txt";
+        public static string eventsFolder = "C:\\omnetpp-4.2.2\\my_workspace\\datacentric\\src\\events\\";
+        public static string displayFolder = "C:\\omnetpp-4.2.2\\my_workspace\\datacentric\\src\\display\\";
+        public static string moduleList = "C:\\omnetpp-4.2.2\\my_workspace\\datacentric\\simulations\\ModuleList.txt";
         public static string ProjFolder = "C:\\Users\\Andrew Hardy\\Documents\\Visual Studio 2008\\Projects\\SensingSimulation\\";
-        //public static string simulationsFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\simulations\\";
-        public static string simulationsFolder = "C:\\omnetpp-4.2.1\\my_workspace\\datacentric\\simulations\\newconnectionfiles\\";
+        public static string simulationsFolder = "C:\\omnetpp-4.2.2\\my_workspace\\datacentric\\simulations\\";
+        //public static string simulationsFolder = "C:\\omnetpp-4.2.2\\my_workspace\\datacentric\\simulations\\newconnectionfiles\\";
 
 
         public static NodeConnection profile = new NodeConnection(null, null, null, "",

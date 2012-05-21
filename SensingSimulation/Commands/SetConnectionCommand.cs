@@ -123,6 +123,12 @@ namespace SensingSimulation.Commands
                     int.Parse(state_action), to_node_up, int.Parse(costDeliv), int.Parse(costObt), 
                     bestDeliver, reinforcedDeliver, bestObtain, reinforcedObtain);
                 NodeConnections.Instance.Add(c);
+                if (!c.to_node_up)
+                {
+                    node2.applButton.Text = "DOWN";
+                    node2.applButton.BackColor = Color.Black;
+                }
+
 
 
 
