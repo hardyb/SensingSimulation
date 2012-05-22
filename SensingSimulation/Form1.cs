@@ -31,7 +31,7 @@ namespace SensingSimulation
         Rectangle selectionRectangle;
         public Diagram mDiagram;
         LoadConnections lcForm;
-
+        bool isDrawing = false;
 
 
         private Point mouseDownLocation = Point.Empty;
@@ -63,6 +63,9 @@ namespace SensingSimulation
             mDiagram = new Diagram(bounds);
             this.ResizeRedraw = false;
             lcForm = new LoadConnections(this);
+            //this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
 
 
 
@@ -289,23 +292,46 @@ namespace SensingSimulation
 
         }
 
+        protected void DrawDiagram()
+        {
+            Graphics gfx = this.CreateGraphics();
+            gfx.Clear(Color.White);
+
+            Pen myPen = new Pen(Color.Black);
+            gfx.DrawRectangle(myPen, this.selectionRectangle);
+            int w = this.ClientRectangle.Width;
+            int h = this.ClientRectangle.Height - this.mainStatus.Height;
+            Rectangle bounds = new Rectangle(0, 0, w, h);
+
+            this.mDiagram.Draw(gfx, bounds);
+
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
+            return;
+
+            //if (isDrawing)
+            //{
+            //    return;
+            //}
             //e.ToString();
             //this.Invalidate(
             
             // Call the OnPaint method of the base class.
             Graphics gfx = this.CreateGraphics();
+            
             //gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 //            gfx.ClipBounds.Size
             //this.Invalidate(
             //gfx.Clear(Color.White);
 
-            if (!e.ClipRectangle.IntersectsWith(this.mDiagram.mBounds))
-            {
-                base.OnPaint(e);
-                return;
-            }
+            //if (!e.ClipRectangle.IntersectsWith(this.mDiagram.mBounds))
+            //{
+            //    base.OnPaint(e);
+            //    return;
+            //}
 
             //if (!e.ClipRectangle.Equals(gfx.ClipBounds))
             //{
@@ -322,7 +348,9 @@ namespace SensingSimulation
             Rectangle bounds = new Rectangle(0, 0, w, h);
             
             //Rectangle bounds = new Rectangle(0, 0, this.Width-50, this.Height-50);
+            //isDrawing = true;
             this.mDiagram.Draw(gfx, bounds);
+            //isDrawing = false;
 
             //this.ClientRectangle
             
@@ -584,7 +612,8 @@ namespace SensingSimulation
             //this.mDiagram.
 
 
-            this.Invalidate();
+            //this.Invalidate();
+            this.DrawDiagram();
 
         }
 
@@ -614,7 +643,8 @@ namespace SensingSimulation
                     IterateGradients(p.Value.node_name);
                 }
             }
-            this.Invalidate();
+            //this.Invalidate();
+            this.DrawDiagram();
         }
 
         private void ReloadNodes()
@@ -623,7 +653,8 @@ namespace SensingSimulation
             Nodes.Instance.removeAllFromForm();
             Nodes.Instance.Clear();
             SimCommands.Instance.execute(Utilities.Helper.moduleList, this);
-            this.Invalidate();
+            //this.Invalidate();
+            this.DrawDiagram();
         }
 
         private void IterateGradients(string currentName)

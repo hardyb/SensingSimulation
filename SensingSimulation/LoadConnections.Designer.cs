@@ -117,10 +117,10 @@
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(136, 41);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(85, 17);
+            this.radioButton1.Size = new System.Drawing.Size(127, 17);
             this.radioButton1.TabIndex = 4;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "radioButton1";
+            this.radioButton1.Text = "Best Deliver Selected";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // LoadConnections
@@ -137,7 +137,7 @@
             this.Controls.Add(this.BestDeliverRButton);
             this.Controls.Add(this.dataNamesCmbBox);
             this.Name = "LoadConnections";
-            this.Text = "LoadConnections";
+            this.Text = "Manage connections";
             this.ResumeLayout(false);
             this.PerformLayout();
 

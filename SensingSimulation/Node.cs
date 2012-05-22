@@ -370,6 +370,11 @@ namespace SensingSimulation
         /// <param name="bounds">The bounds in which to draw the node.</param>
         public override void DrawNode(Graphics graphics, Rectangle bounds)
         {
+            if (b.Location.Equals(bounds.Location))
+            {
+                return;
+            }
+
             b.Location = new Point(bounds.X, bounds.Y);
             //b.Location.X = bounds.Left;
             //b.Location.Y = bounds.Top;

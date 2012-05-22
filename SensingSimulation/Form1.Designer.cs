@@ -39,6 +39,7 @@
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.LoadNodesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadConnectionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ArrangeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PresentationMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,7 +47,6 @@
             this.reinforcementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LoadConnectionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainStatus.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -113,7 +113,7 @@
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(35, 17);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(31, 17);
             this.toolStripStatusLabel.Text = "hhhh";
             // 
             // toolStripSplitButton1
@@ -138,48 +138,55 @@
             this.testToolStripMenuItem,
             this.contextToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(179, 202);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(184, 224);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // LoadNodesMenuItem
             // 
             this.LoadNodesMenuItem.Name = "LoadNodesMenuItem";
-            this.LoadNodesMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.LoadNodesMenuItem.Size = new System.Drawing.Size(183, 22);
             this.LoadNodesMenuItem.Text = "Load";
             this.LoadNodesMenuItem.Click += new System.EventHandler(this.LoadNodesMenuItem_Click);
+            // 
+            // LoadConnectionsMenuItem
+            // 
+            this.LoadConnectionsMenuItem.Name = "LoadConnectionsMenuItem";
+            this.LoadConnectionsMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.LoadConnectionsMenuItem.Text = "Manage connections";
+            this.LoadConnectionsMenuItem.Click += new System.EventHandler(this.LoadConnectionsMenuItem_Click);
             // 
             // ArrangeMenuItem
             // 
             this.ArrangeMenuItem.Name = "ArrangeMenuItem";
-            this.ArrangeMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.ArrangeMenuItem.Size = new System.Drawing.Size(183, 22);
             this.ArrangeMenuItem.Text = "Arrange nodes";
             this.ArrangeMenuItem.Click += new System.EventHandler(this.ArrangeMenuItem_Click);
             // 
             // PresentationMenu
             // 
             this.PresentationMenu.Name = "PresentationMenu";
-            this.PresentationMenu.Size = new System.Drawing.Size(170, 22);
+            this.PresentationMenu.Size = new System.Drawing.Size(183, 22);
             this.PresentationMenu.Text = "Show";
             this.PresentationMenu.Click += new System.EventHandler(this.PresentationMenu_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // dataToolStripMenuItem
             // 
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            this.dataToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.dataToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.dataToolStripMenuItem.Text = "Export Positions";
             this.dataToolStripMenuItem.Click += new System.EventHandler(this.dataToolStripMenuItem_Click);
             // 
             // reinforcementToolStripMenuItem
             // 
             this.reinforcementToolStripMenuItem.Name = "reinforcementToolStripMenuItem";
-            this.reinforcementToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.reinforcementToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.reinforcementToolStripMenuItem.Text = "Four";
             this.reinforcementToolStripMenuItem.Visible = false;
             this.reinforcementToolStripMenuItem.Click += new System.EventHandler(this.reinforcementToolStripMenuItem_Click);
@@ -187,23 +194,16 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.testToolStripMenuItem.Text = "test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // contextToolStripMenuItem
             // 
             this.contextToolStripMenuItem.Name = "contextToolStripMenuItem";
-            this.contextToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.contextToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.contextToolStripMenuItem.Text = "context";
             this.contextToolStripMenuItem.Click += new System.EventHandler(this.contextToolStripMenuItem_Click);
-            // 
-            // LoadConnectionsMenuItem
-            // 
-            this.LoadConnectionsMenuItem.Name = "LoadConnectionsMenuItem";
-            this.LoadConnectionsMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.LoadConnectionsMenuItem.Text = "Reload connections";
-            this.LoadConnectionsMenuItem.Click += new System.EventHandler(this.LoadConnectionsMenuItem_Click);
             // 
             // Form1
             // 

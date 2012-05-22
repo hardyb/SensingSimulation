@@ -195,6 +195,7 @@ namespace SensingSimulation
             //this.toolStripMenuItem1.Click += new System.EventHandler(
             eNode = new ENode(this);
             ag = new Aggregation();
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
 
         }
