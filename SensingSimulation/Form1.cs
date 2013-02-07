@@ -444,9 +444,17 @@ namespace SensingSimulation
             }
             ReloadNodes();
             SetConnectionCommand c = (SetConnectionCommand)SimCommands.Instance["CONNECTION"];
-            c.DataNameParam = "0202FF06";
-            c.connectionSet = SetConnectionCommand.ConnectionSetType.BestDeliver;
-            ReloadConnections();
+            c.DataNameParam = "";
+            //c.connectionSet = SetConnectionCommand.ConnectionSetType.BestDeliver;
+            NodeConnections.Instance.Clear();
+            foreach (KeyValuePair<string, Appliance> p in Nodes.Instance)
+            {
+                string nodeConnectionsFile = p.Key + "Connections.txt";
+                SimCommands.Instance.execute(Utilities.Helper.simulationsFolder + nodeConnectionsFile, this);
+            }
+
+
+            //ReloadConnections();
         }
         
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -636,6 +644,9 @@ namespace SensingSimulation
                 string nodeConnectionsFile = p.Key + "Connections.txt";
                 SimCommands.Instance.execute(Utilities.Helper.simulationsFolder + nodeConnectionsFile, this);
             }
+            
+            // Adds all connections (children only in diagram) starting
+            // from each node that is selected
             foreach (KeyValuePair<string, Appliance> p in Nodes.Instance)
             {
                 if (p.Value.applButton.Selected)
@@ -643,6 +654,7 @@ namespace SensingSimulation
                     IterateGradients(p.Value.node_name);
                 }
             }
+
             //this.Invalidate();
             this.DrawDiagram();
         }
@@ -672,6 +684,7 @@ namespace SensingSimulation
             }
 
         }
+
 
 
         private void Form1_MaximizedBoundsChanged(object sender, EventArgs e)

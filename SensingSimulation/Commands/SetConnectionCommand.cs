@@ -10,7 +10,7 @@ namespace SensingSimulation.Commands
 {
     class SetConnectionCommand : SimulationCommand
     {
-        string currentName = "AAA0000004C";
+        //string currentName = "AAA0000004C";
         public string DataNameParam;
         public enum ConnectionSetType { Deliver, BestDeliver, ReinforceDeliver, BestObtain, ReinforceObtain};
         public ConnectionSetType connectionSet = ConnectionSetType.BestDeliver;
@@ -74,6 +74,8 @@ namespace SensingSimulation.Commands
             IncrementLineNumber();
             
             string state_name = rdr.ReadLine();
+            States.Instance.Add(state_name);
+
             int[] state_array = new int[20];
             //for (int i = 0;
             //    int.TryParse(state_name.Substring(i * 2, 2),
@@ -84,6 +86,10 @@ namespace SensingSimulation.Commands
             IncrementLineNumber();
             string to_node = rdr.ReadLine();
             IncrementLineNumber();
+
+            string dummySeqno = rdr.ReadLine(); // not in use just yet
+            IncrementLineNumber();
+
             bool to_node_up;
             bool.TryParse(rdr.ReadLine(), out to_node_up);
             IncrementLineNumber();
@@ -129,6 +135,11 @@ namespace SensingSimulation.Commands
                     node2.applButton.BackColor = Color.Black;
                 }
 
+                if (DataNameParam == "")
+                {
+                    return;
+                }
+
 
 
 
@@ -155,8 +166,11 @@ namespace SensingSimulation.Commands
                     //node1.applButton.eNode.AddGradient(c);
                 }
 
+
+
                 if (c.state == this.DataNameParam &&
-                    connectionSet == ConnectionSetType.Deliver)
+                    c.bestDeliver && connectionSet == ConnectionSetType.Deliver
+                    && node1.applButton.Selected )
                 {
                     //IterateGradients();
                     //string currentName = "AAA0000004C";
@@ -195,6 +209,9 @@ namespace SensingSimulation.Commands
         }
 
 
+
+
+        /*
         private void IterateGradients()
         {
             foreach (NodeConnection n in NodeConnections.Instance)
@@ -210,6 +227,9 @@ namespace SensingSimulation.Commands
             }
 
         }
+         * */
+
+
 
 
 

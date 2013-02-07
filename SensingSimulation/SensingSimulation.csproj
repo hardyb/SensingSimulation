@@ -71,6 +71,7 @@
     <Compile Include="Context.Designer.cs">
       <DependentUpon>Context.cs</DependentUpon>
     </Compile>
+    <Compile Include="States.cs" />
     <Compile Include="Diagram.cs" />
     <Compile Include="LoadConnections.cs">
       <SubType>Form</SubType>

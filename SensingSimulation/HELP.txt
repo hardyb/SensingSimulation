@@ -1,0 +1,37 @@
+
+
+
+
+
+
+
+
+right click on form to get popup menu
+
+from popup menu
+
+ 
+Load -	clears the directed diagram of connections and nodes
+	clears the node data file records
+	reload the node data file records
+	redraws diagram (i.e. a clear one?)
+	clears the connection data file records
+	reloads the connection data file records
+
+	Each node datafile record is represeted by a button
+	so at this point all the nodes appear large and in the same default position
+
+
+XXX -
+
+
+
+
+
+Connections Dialog
+
+Ok button here is the only place to call ReloadConnections()
+
+and only from here are the nodes added to the underlying directed diagram
+
+on the very first Load from "Load" in popup menu all internal connections are cleared ad recreated but they are not added to the directed diagram unless called from the connections dialog via ReloadConnections()

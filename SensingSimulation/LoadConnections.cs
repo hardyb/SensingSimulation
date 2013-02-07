@@ -23,7 +23,8 @@ namespace SensingSimulation
         public LoadConnections(Form1 _mainForm)
         {
             InitializeComponent();
-            this.dataNamesCmbBox.Items.Add("0202FF06");
+
+
             //dataNamesCmbBox.SelectedText = "0202FF06";
             //dataNamesCmbBox.SelectedItem = dataNamesCmbBox.Items.get
             mainForm = _mainForm;
@@ -36,6 +37,8 @@ namespace SensingSimulation
         {
             SetConnectionCommand c = (SetConnectionCommand)SimCommands.Instance["CONNECTION"];
             c.DataNameParam = dataNamesCmbBox.SelectedItem as string;
+            //c.DataNameParam = dataNamesCmbBox.SelectedText;
+            //c.DataNameParam = (string)dataNamesCmbBox.SelectedValue;
             //dataNamesCmbBox.SelectedItem
             if ( this.BestDeliverRButton.Checked )
             {
@@ -75,7 +78,33 @@ namespace SensingSimulation
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            this.dataNamesCmbBox.Items.Clear();
             this.Hide();
+        }
+
+        private void LoadConnections_Shown(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                resetDataNamesCombo();
+            }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void resetDataNamesCombo()
+        {
+            this.dataNamesCmbBox.Items.Clear();
+            foreach (string s in States.Instance)
+            {
+                this.dataNamesCmbBox.Items.Add(s);
+            }
+            this.dataNamesCmbBox.SelectedIndex = 0;
+
         }
     }
 }
