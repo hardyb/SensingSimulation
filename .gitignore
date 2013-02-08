@@ -10,3 +10,10 @@
 *.lai
 *.la
 *.a
+
+# Extra files causing an issue
+*.exe
+*.pdb
+*.resources
+*.Cache
+*.suo
